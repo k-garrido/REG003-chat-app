@@ -5,7 +5,7 @@ const { port } = require('../config')
 console.log(port)
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Probando github actions!')
 })
 
 app.listen(port, () => {
