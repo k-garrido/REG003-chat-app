@@ -1,5 +1,5 @@
 module.exports = {
-   getUsers: (req, res) => {
+  getUsers: (req, res) => {
     res.send('users');
   },
   getUser: (req, res) => {

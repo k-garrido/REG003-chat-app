@@ -1,25 +1,25 @@
 const express = require('express');
 const app = express();
 const pg = require("pg");
-const { port, dbUrl } = require('../config');
-
-// Coneccion a PostreSQL con PG
-const pgClient = new pg.Client({ connectionString: dbUrl });
-pgClient.connect();
-pgClient.query("SELECT NOW()", (err, res) => {
-  console.log('conectado a la base de datos');  
-});
+const pkg = require('../package.json');
+const errorHandler = require('./middlewares/error');
+const routes = require('./routes');
+const { port } = require('../config');
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+//Settings
+app.set('pkg', pkg);
+
 // Routes
-
-app.use(require('./routes/index'));
-
-
-
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
-})
+routes(app, (err) => {
+  if (err) {
+    throw err;
+  }
+  app.use(errorHandler);
+  app.listen(port, () => {
+    console.info(`App listening at http://localhost:${port}`);
+  });
+});

@@ -6,4 +6,5 @@ module.exports = (app, next) => {
   app.post('/users', createUser);
   app.put('/users/:uid', updateUser);
   app.delete('/users/:uid', deleteUser);
+  next()
 }
