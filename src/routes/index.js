@@ -1,4 +1,5 @@
 const users = require('./users');
+const auth = require('./auth');
 
 const root = (app, next) => {
   const pkg = app.get('pkg');
@@ -23,5 +24,6 @@ const register = (app, routes, cb) => {
 
 module.exports = (app, next) => register(app, [
   users,
+  auth,
   root,
 ], next); 
