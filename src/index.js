@@ -1,13 +1,25 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
+const pkg = require('../package.json');
+const errorHandler = require('./middlewares/error');
+const routes = require('./routes');
+const config = require('../config');
 
-const { port } = require('../config')
-console.log(port)
+// Middlewares
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Probando github actions!')
-})
+//Settings
+app.set('pkg', pkg);
+app.set('config', config);
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
-})
+// Routes
+routes(app, (err) => {
+  if (err) {
+    throw err;
+  }
+  app.use(errorHandler);
+  app.listen(config.port, () => {
+    console.info(`App listening at http://localhost:${config.port}`);
+  });
+});
