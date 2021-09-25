@@ -1,6 +1,8 @@
 name: Node.js CI
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -39,13 +41,8 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Add Heroku remote
-        run: heroku git:remote -a $HEROKU_APP_NAME
-      - name: add docs  
-        run: git add .
-      -name: commit 
-        run: git commit -am "make it better"
+        run: heroku git:remote --app $HEROKU_APP_NAME
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
       - name: Push to Heroku
         run: git push heroku main
-      
