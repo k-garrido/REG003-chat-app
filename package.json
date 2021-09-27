@@ -16,10 +16,10 @@
     "jsonwebtoken": "^8.5.1",
     "socket.io": "^4.1.2",
     "prisma": "^3.0.2",
-    "@prisma/client": "^3.0.2"
+    "@prisma/client": "^3.0.2",
+    "bcrypt": "^5.0.1"
   },
   "devDependencies": {
-    "bcrypt": "^5.0.1",
     "eslint": "^7.30.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
