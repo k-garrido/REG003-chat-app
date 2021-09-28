@@ -4,10 +4,12 @@ const pkg = require('../package.json');
 const errorHandler = require('./middlewares/error');
 const routes = require('./routes');
 const config = require('../config');
+const cors = require('cors');
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
 //Settings
 app.set('pkg', pkg);

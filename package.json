@@ -12,12 +12,13 @@
     "db-down": "docker-compose down"
   },
   "dependencies": {
+    "@prisma/client": "^3.0.2",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "socket.io": "^4.1.2",
     "prisma": "^3.0.2",
-    "@prisma/client": "^3.0.2",
-    "bcrypt": "^5.0.1"
+    "socket.io": "^4.1.2"
   },
   "devDependencies": {
     "eslint": "^7.30.0",
