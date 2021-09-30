@@ -5,13 +5,15 @@ const errorHandler = require('./middlewares/error');
 const routes = require('./routes');
 const config = require('../config');
 const cors = require('cors');
+const { Server } = require("socket.io");
+
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
-//Settings
+// Settings
 app.set('pkg', pkg);
 app.set('config', config);
 
@@ -21,7 +23,11 @@ routes(app, (err) => {
     throw err;
   }
   app.use(errorHandler);
-  app.listen(config.port, () => {
+  const server = app.listen(config.port, () => {
     console.info(`App listening at http://localhost:${config.port}`);
+  });
+  const io = new Server(server);
+  io.on('connection', (socket) => {
+    console.log('a user connected');
   });
 });
