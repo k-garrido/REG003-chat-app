@@ -26,8 +26,16 @@ routes(app, (err) => {
   const server = app.listen(config.port, () => {
     console.info(`App listening at http://localhost:${config.port}`);
   });
-  const io = new Server(server);
+  const io = new Server(server, {
+    cors: {
+      origin: "https://chat-app-kgarrido.herokuapp.com/",
+      methods: ["GET", "POST", "PUT", "DELETE"]
+    }
+  });
   io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
   });
 });
