@@ -27,10 +27,13 @@ routes(app, (err) => {
     console.info(`App listening at http://localhost:${config.port}`);
   });
   const io = new Server(server, {
-    cors: {
-      origin: "https://chat-app-kgarrido.herokuapp.com/",
-      methods: ["GET", "POST", "PUT", "DELETE"]
-    }
+    cors:{
+      origin:"http://localhost:3000/",
+      methods: ["GET","POST"],
+      credentials: true,
+      allowEIO3: true
+      },
+      transport: ['websocket']
   });
   io.on('connection', (socket) => {
     console.log('a user connected');
