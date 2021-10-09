@@ -37,5 +37,18 @@ routes(app, (err) => {
   });
   io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.on('createRoom', (room) => { 
+      console.log(room)
+    })
+    socket.on('sendMessage', (message, roomId) => {
+      fullMessage = {
+        userName = 'prueba',
+        roomId,
+        message,
+
+      };
+      console.log(fullMessage);
+      io.to(roomId).emit('finalMessage', fullMessage);
+    })
   });
 });
