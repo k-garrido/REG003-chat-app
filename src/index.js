@@ -6,6 +6,7 @@ const routes = require('./routes');
 const config = require('../config');
 const cors = require('cors');
 const { Server } = require("socket.io");
+const { createRoom } = require('./controllers/rooms')
 
 
 // Middlewares
@@ -26,6 +27,8 @@ routes(app, (err) => {
   const server = app.listen(config.port, () => {
     console.info(`App listening at http://localhost:${config.port}`);
   });
+
+  // Coneccion a socket
   const io = new Server(server, {
     cors:{
       origin:"http://localhost:3000",
@@ -37,17 +40,21 @@ routes(app, (err) => {
   });
   io.on('connection', (socket) => {
     console.log('a user connected');
+    // Escuchando el evento de creacion de salas
     socket.on('createRoom', (room) => { 
       console.log(room)
+      createRoom(room)
     })
+    // Escuchando el evento de creacion de mensajes
     socket.on('sendMessage', (message, roomId) => {
       fullMessage = {
         userName: 'prueba',
         roomId,
-        message,
+        message,w
 
       };
       console.log(fullMessage);
+      // Emitiendo el mensaje completo a todos los usuarios.
       io.emit('finalMessage', fullMessage);
     })
   });
