@@ -43,9 +43,12 @@ routes(app, (err) => {
     console.log('a user connected');
     // Escuchando el evento de creacion de salas
     socket.on('createRoom', async (room) => { 
-      await createRoom(room);
-      const allRooms = await getRooms()
-      io.emit('createdRoom', allRooms);
+      const newRoom = await createRoom(room);
+      io.emit('createdRoom', newRoom);
+    })
+    getRooms().then (res => {
+      console.log(res)
+      socket.emit('allRooms', res);
     })
     // Escuchando el evento de creacion de mensajes
     socket.on('sendMessage', (message, roomId) => {
@@ -53,7 +56,6 @@ routes(app, (err) => {
         userName: 'prueba',
         roomId,
         message,
-
       };
       console.log(fullMessage);
       // Emitiendo el mensaje completo a todos los usuarios.
