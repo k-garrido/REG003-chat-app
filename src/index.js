@@ -6,7 +6,8 @@ const routes = require('./routes');
 const config = require('../config');
 const cors = require('cors');
 const { Server } = require("socket.io");
-const { createRoom, getRooms } = require('./controllers/rooms')
+const { createRoom, getRooms } = require('./controllers/rooms');
+const { createMessage, getMessages } = require('./controllers/messages');
 
 
 // Middlewares
@@ -41,22 +42,27 @@ routes(app, (err) => {
   
   io.on('connection', (socket) => {
     console.log('a user connected');
+
     // Escuchando el evento de creacion de salas
     socket.on('createRoom', async (room) => { 
       const newRoom = await createRoom(room);
       io.emit('createdRoom', newRoom);
     })
     getRooms().then (res => {
-      console.log(res)
       socket.emit('allRooms', res);
     })
+
     // Escuchando el evento de creacion de mensajes
-    socket.on('sendMessage', (message, roomId) => {
+    socket.on('sendMessage', async (message, roomId) => {
       fullMessage = {
         userName: 'prueba',
+        userID: 1,
         roomId,
         message,
       };
+      const newMessage = await createMessage(fullMessage);
+      io.emit('createdMessage', newMessage);
+
       console.log(fullMessage);
       // Emitiendo el mensaje completo a todos los usuarios.
       io.emit('finalMessage', fullMessage);

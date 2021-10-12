@@ -17,11 +17,22 @@ model User {
   email    String   @unique @db.VarChar(255)
   password String  
   admin    Boolean  @default(false)
+  posts Message []
 }
 
 model Room {
   id       Int      @id @default(autoincrement())
   name     String   @db.VarChar(40) @unique
+}
+
+model Message {
+  room_id  Int      @id @default(autoincrement())
+  name     String   @db.VarChar(40) 
+  text     String   @db.VarChar(500) 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
 }
 
 
