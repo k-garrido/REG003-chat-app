@@ -42,8 +42,9 @@ routes(app, (err) => {
     console.log('a user connected');
     // Escuchando el evento de creacion de salas
     socket.on('createRoom', (room) => { 
-      console.log(room)
-      createRoom(room)
+      const newRoom = createRoom(room);
+      console.log(newRoom);
+      io.emit('createdRoom', newRoom);
     })
     // Escuchando el evento de creacion de mensajes
     socket.on('sendMessage', (message, roomId) => {
