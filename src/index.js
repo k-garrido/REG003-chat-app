@@ -48,7 +48,7 @@ routes(app, (err) => {
 
       };
       console.log(fullMessage);
-      io.to(roomId).emit('finalMessage', fullMessage);
+      io.emit('finalMessage', fullMessage);
     })
   });
 });
