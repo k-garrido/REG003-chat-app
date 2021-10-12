@@ -6,7 +6,7 @@ const routes = require('./routes');
 const config = require('../config');
 const cors = require('cors');
 const { Server } = require("socket.io");
-const { createRoom } = require('./controllers/rooms')
+const { createRoom, getRooms } = require('./controllers/rooms')
 
 
 // Middlewares
@@ -43,9 +43,9 @@ routes(app, (err) => {
     console.log('a user connected');
     // Escuchando el evento de creacion de salas
     socket.on('createRoom', async (room) => { 
-      const newRoom = await createRoom(room);
-      console.log(newRoom)
-      io.emit('createdRoom', newRoom);
+      await createRoom(room);
+      const allRooms = await getRooms()
+      io.emit('createdRoom', allRooms);
     })
     // Escuchando el evento de creacion de mensajes
     socket.on('sendMessage', (message, roomId) => {

@@ -23,4 +23,13 @@ module.exports = {
       console.log(error);
     }
   },
+  getRooms: async () => {
+    try {
+      const rooms = await room.findMany({
+      });
+      return rooms
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
