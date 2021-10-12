@@ -42,7 +42,7 @@ routes(app, (err) => {
     })
     socket.on('sendMessage', (message, roomId) => {
       fullMessage = {
-        userName = 'prueba',
+        userName: 'prueba',
         roomId,
         message,
 
