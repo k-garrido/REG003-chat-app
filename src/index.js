@@ -8,6 +8,7 @@ const cors = require('cors');
 const { Server } = require("socket.io");
 const { createRoom, getRooms } = require('./controllers/rooms');
 const { createMessage, getMessages } = require('./controllers/messages');
+const { addUser, getUser, removeUser } = require('./utils');
 
 
 // Middlewares
@@ -43,29 +44,45 @@ routes(app, (err) => {
   io.on('connection', (socket) => {
     console.log('a user connected');
 
-    // Escuchando el evento de creacion de salas
+    // 1.2. Escuchando el evento de creacion de una sala y emitiendo los datos a todos los sockets conectados.
     socket.on('createRoom', async (room) => { 
       const newRoom = await createRoom(room);
       io.emit('createdRoom', newRoom);
     })
+    // 2.1 Recibiendolos todas las salas de chat guardadas en postgres y emitiendo el evento con sus datos.
     getRooms().then (res => {
       socket.emit('allRooms', res);
     })
-
-    // Escuchando el evento de creacion de mensajes
+    // 3.2 Escuchando el evento para unir a un usuario a una sala.
+    socket.on('join', ({ name, room_id, user_id }) => {
+      const { error, user } = addUser({
+          socket_id: socket.id,
+          name,
+          room_id,
+          user_id
+      })
+      socket.join(room_id);
+      if (error) {
+          console.log('join error', error)
+      } else {
+          console.log('join user', user)
+      }
+  })  
+    // 4.2 Escuchando el evento de creacion de mensajes y emitiendo el mensaje a los demas sockets que estan en la sala.
     socket.on('sendMessage', async (message, roomId) => {
+      const user = getUser(socket.id);
       fullMessage = {
-        userName: 'prueba',
-        userID: 1,
+        userName: user.name,
+        userID: user.user_id,
         roomId,
         message,
       };
       const newMessage = await createMessage(fullMessage);
-      io.emit('createdMessage', newMessage);
-
-      console.log(fullMessage);
-      // Emitiendo el mensaje completo a todos los usuarios.
-      io.emit('finalMessage', fullMessage);
+      io.to(roomId).emit('createdMessage', newMessage);
+      console.log(fullMessage); 
     })
+    socket.on('disconnect', () => {
+      removeUser(socket.id);
+  })
   });
 });
