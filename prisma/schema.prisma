@@ -23,10 +23,13 @@ model User {
 model Room {
   id       Int      @id @default(autoincrement())
   name     String   @db.VarChar(40) @unique
+  message Message []
 }
 
 model Message {
-  room_id  Int      @id @default(autoincrement())
+  message_id Int    @id @default(autoincrement())
+  room Room @relation(fields: [room_id], references: [id])
+  room_id  Int    
   name     String   @db.VarChar(40) 
   text     String   @db.VarChar(500) 
   created_at DateTime @default(now())

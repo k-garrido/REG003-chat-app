@@ -6,6 +6,7 @@ module.exports = {
     try {
       const newMessage = await message.create({
         data: {
+          room_id: fullMessage.roomId,
           name: fullMessage.userName,
           text: fullMessage.message,
           user_id: fullMessage.userID

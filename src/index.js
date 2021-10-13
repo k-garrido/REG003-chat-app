@@ -71,11 +71,10 @@ routes(app, (err) => {
     // 4.2 Escuchando el evento de creacion de mensajes y emitiendo el mensaje a los demas sockets que estan en la sala.
     socket.on('sendMessage', async (message, roomId) => {
       const user = getUser(socket.id);
-      console.log(user)
       fullMessage = {
         userName: user.name,
         userID: parseInt(user.user_id, 10),
-        roomId,
+        roomId: parseInt(roomId, 10),
         message,
       };
       const newMessage = await createMessage(fullMessage);
