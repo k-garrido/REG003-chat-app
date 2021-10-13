@@ -74,7 +74,7 @@ routes(app, (err) => {
       console.log(user)
       fullMessage = {
         userName: user.name,
-        userID: user.user_id,
+        userID: parseInt(user.user_id, 10),
         roomId,
         message,
       };
