@@ -71,6 +71,7 @@ routes(app, (err) => {
     // 4.2 Escuchando el evento de creacion de mensajes y emitiendo el mensaje a los demas sockets que estan en la sala.
     socket.on('sendMessage', async (message, roomId) => {
       const user = getUser(socket.id);
+      console.log(user)
       fullMessage = {
         userName: user.name,
         userID: user.user_id,
@@ -81,7 +82,7 @@ routes(app, (err) => {
       io.to(roomId).emit('createdMessage', newMessage);
       console.log(fullMessage); 
     })
-    socket.on('disconnect', () => {
+    socket.on('disconnectSocket', () => {
       removeUser(socket.id);
   })
   });
