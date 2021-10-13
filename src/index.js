@@ -52,6 +52,8 @@ routes(app, (err) => {
     // 2.1 Recibiendolos todas las salas de chat guardadas en postgres y emitiendo el evento con sus datos.
     getRooms().then (res => {
       socket.emit('allRooms', res);
+    }).catch (error => {
+      console.log(error); 
     })
     // 3.2 Escuchando el evento para unir a un usuario a una sala.
     socket.on('join', ({ name, room_id, user_id }) => {
