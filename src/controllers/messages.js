@@ -4,6 +4,7 @@ const { message } = new PrismaClient();
 module.exports = {
   createMessage: async (fullMessage) => {
     try {
+      console.log(fullMessage)
       const newMessage = await message.create({
         data: {
           room_id: fullMessage.roomId,
