@@ -7,7 +7,7 @@ const config = require('../config');
 const cors = require('cors');
 const { Server } = require("socket.io");
 const { createRoom, getRooms } = require('./controllers/rooms');
-const { createMessage, getMessages } = require('./controllers/messages');
+const { createMessage } = require('./controllers/messages');
 const { addUser, getUser, removeUser } = require('./utils');
 
 

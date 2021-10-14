@@ -1,10 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
+const messages = require('../routes/messages');
 const { message } = new PrismaClient();
 
 module.exports = {
   createMessage: async (fullMessage) => {
     try {
-      console.log(fullMessage)
       const newMessage = await message.create({
         data: {
           room_id: fullMessage.roomId,
@@ -19,12 +19,26 @@ module.exports = {
       console.log(error);
     }
   },
-  getMessages: async () => {
+
+  getMessages: async (req, res) => {
     try {
       const rooms = await message.findMany({});
-      return rooms
+      res.send(rooms); 
     } catch (error) {
       console.log(error);
     }
   },
+
+  getMessagesByRoom: async (req, res) => {
+    try {
+      const { rid } = req.params;
+      const messagesByRoom = await message.findMany({
+        where: {
+          room_id: parseInt(rid, 10)
+      }})
+      res.send(messagesByRoom);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 };
