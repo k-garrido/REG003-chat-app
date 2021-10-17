@@ -63,7 +63,7 @@ routes(app, (err) => {
           room_id,
           user_id
       })
-      socket.join(room_id);
+      socket.join(user.room_id);
       if (error) {
           console.log('join error', error)
       } else {
@@ -80,7 +80,7 @@ routes(app, (err) => {
         message,
       };
       const newMessage = await createMessage(fullMessage);
-      socket.to(roomId).emit('createdMessage', newMessage);
+      io.to(roomId).emit('createdMessage', newMessage);
       console.log(fullMessage); 
     })
     socket.on('disconnectSocket', () => {
