@@ -80,7 +80,7 @@ routes(app, (err) => {
         message,
       };
       const newMessage = await createMessage(fullMessage);
-      io.to(roomId).emit('createdMessage', newMessage);
+      socket.to(roomId).emit('createdMessage', newMessage);
       console.log(fullMessage); 
     })
     socket.on('disconnectSocket', () => {
