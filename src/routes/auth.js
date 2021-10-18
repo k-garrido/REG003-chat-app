@@ -22,7 +22,7 @@ module.exports = (app, nextMain) => {
         return next(404);
       }
       if (bcrypt.compareSync(password, findUser.password)) {
-        const token = jwt.sign({ uid: findUser._id }, secret);
+        const token = jwt.sign({ uid: findUser._id, name: findUser.name }, secret);
         res.send({ token });
       }
     } catch (error) {
