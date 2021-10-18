@@ -56,35 +56,24 @@ routes(app, (err) => {
       console.log(error); 
     })
     // 3.2 Escuchando el evento para unir a un usuario a una sala.
-    socket.on('join', ({ name, room_id, user_id }) => {
-      const { error, user } = addUser({
-          socket_id: socket.id,
-          name,
-          room_id,
-          user_id
-      })
-      socket.join(user.room_id);
-      if (error) {
-          console.log('join error', error)
-      } else {
-          console.log('join user', user)
-      }
+    socket.on('join', (roomID) => {
+      socket.join(roomID);
+      
   })  
     // 4.2 Escuchando el evento de creacion de mensajes y emitiendo el mensaje a los demas sockets que estan en la sala.
-    socket.on('sendMessage', async (message, roomId) => {
-      const user = getUser(socket.id);
+    socket.on('sendMessage', async (message, roomId, userName, userID) => {
       fullMessage = {
-        userName: user.name,
-        userID: parseInt(user.user_id, 10),
-        roomId: parseInt(roomId, 10),
+        userName: userName,
+        userID: parseInt(userID),
+        roomId: parseInt(roomId),
         message,
       };
       const newMessage = await createMessage(fullMessage);
       io.to(roomId).emit('createdMessage', newMessage);
       console.log(fullMessage); 
     })
-    socket.on('disconnectSocket', () => {
-      removeUser(socket.id);
+    socket.on('disconnectSocket', (data) => {
+      socket.leave(data)
   })
   });
 });
