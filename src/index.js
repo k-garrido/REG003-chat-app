@@ -58,6 +58,7 @@ routes(app, (err) => {
     // 3.2 Escuchando el evento para unir a un usuario a una sala.
     socket.on('join', (roomID) => {
       socket.join(roomID);
+      console.log('se ha unido el usuario ', socket.id, ' a la sala', roomID )
       
   })  
     // 4.2 Escuchando el evento de creacion de mensajes y emitiendo el mensaje a los demas sockets que estan en la sala.
@@ -74,6 +75,7 @@ routes(app, (err) => {
     })
     socket.on('disconnectSocket', (data) => {
       socket.leave(data)
+      console.log('se ha desconectado el usuario ', socket.id, ' de la sala', data )
   })
   });
 });
