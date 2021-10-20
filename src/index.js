@@ -31,7 +31,7 @@ routes(app, (err) => {
   // Coneccion a socket
   const io = new Server(server, {
     cors:{
-      origin:"*",
+      origin:"https://chat-app-client-kgarrido.herokuapp.com/",
       methods: ["GET","POST"],
       credentials: true,
       allowEIO3: true
