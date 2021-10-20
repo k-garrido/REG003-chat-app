@@ -31,14 +31,13 @@ routes(app, (err) => {
   // Coneccion a socket
   const io = new Server(server, {
     cors:{
-      origin:"https://chat-app-client-kgarrido.herokuapp.com/",
+      origin:"https://chat-app-client-kgarrido.herokuapp.com",
       methods: ["GET","POST"],
       credentials: true,
       allowEIO3: true
       },
       transport: ['websocket']
   });
-  io.origins('*:*')
   
   io.on('connection', (socket) => {
     console.log('a user connected');
