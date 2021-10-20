@@ -38,6 +38,7 @@ routes(app, (err) => {
       },
       transport: ['websocket']
   });
+  io.origins('*:*')
   
   io.on('connection', (socket) => {
     console.log('a user connected');
