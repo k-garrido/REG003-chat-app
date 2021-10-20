@@ -8,8 +8,6 @@ const cors = require('cors');
 const { Server } = require("socket.io");
 const { createRoom, getRooms } = require('./controllers/rooms');
 const { createMessage } = require('./controllers/messages');
-const { addUser, getUser, removeUser } = require('./utils');
-
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
@@ -33,7 +31,7 @@ routes(app, (err) => {
   // Coneccion a socket
   const io = new Server(server, {
     cors:{
-      origin:"http://localhost:3000",
+      origin:"https://chat-app-client-kgarrido.herokuapp.com/",
       methods: ["GET","POST"],
       credentials: true,
       allowEIO3: true
@@ -73,6 +71,8 @@ routes(app, (err) => {
       io.to(roomId).emit('createdMessage', newMessage);
       console.log(fullMessage); 
     })
+
+    // Desconeccion de la sala 
     socket.on('disconnectSocket', (data) => {
       socket.leave(data)
       console.log('se ha desconectado el usuario ', socket.id, ' de la sala', data )
